@@ -1,0 +1,20 @@
+{
+  "name": "telegram-bot-admin",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsc  && nodemon --env-file=.env ./dist/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@telegraf/types": "^7.1.0",
+    "axios": "^1.7.2",
+    "telegraf": "^4.16.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.10",
+    "nodemon": "^3.1.4"
+  }
+}

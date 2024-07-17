@@ -1,0 +1,6 @@
+{
+    "middleware": {
+        "success": "Excel recibido correctamente",
+        "error": "El archivo no es un excel"
+    }
+}
