@@ -1,28 +1,30 @@
-import axios from "axios"
-import { Stream } from "stream"
-import fs from "fs"
-import path from "path"
+import axios, { AxiosResponse } from "axios";
+import { Stream } from "stream";
+import fs from "fs";
+import path from "path";
+import { dirDocumentPath } from "../config";
 
-type OutPutPath = string
+type OutPutPath = string;
 
+export const uploadDocument = async (url: string): Promise<OutPutPath> => {
+  const response: AxiosResponse<Stream> = await axios.get(url, {
+    responseType: "stream",
+  });
 
-export const uploadDocument = async  (url:string):Promise<OutPutPath> => {
-   
-   const response  = await  axios.get<Stream>(url, {responseType: 'stream'})
-   
-   if(!response) throw new Error("getDocument : Document not found")
+  if (!response) throw new Error("getDocument : Document not found");
 
-  
-   const outPutPath : OutPutPath = path.join(__dirname,'..','..','uploads','documents',`${Date.now()}.xlsx`)
+  const outPutPath = path.join(
+    dirDocumentPath,
+    "received",
+    `${Date.now()}.xlsx`
+  );
 
-   
-    fs.createWriteStream(outPutPath).write(response.data)
+  const writer = fs.createWriteStream(outPutPath);
 
+  response.data.pipe(writer);
 
-
-   return outPutPath
-
-
-  
-
-}
+  return new Promise((resolve, reject) => {
+    writer.on("finish", () => resolve(outPutPath));
+    writer.on("error", reject);
+  });
+};

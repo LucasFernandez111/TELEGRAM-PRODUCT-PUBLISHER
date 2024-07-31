@@ -1,0 +1,1 @@
+{"version":3,"file":"scrape.js","sourceRoot":"","sources":["../../src/config/scrape.ts"],"names":[],"mappings":";;;AAAa,QAAA,SAAS,GACpB,qHAAqH,CAAC;AAE3G,QAAA,OAAO,GAAG;IACrB;QACE,IAAI,EAAE,YAAY;QAClB,KAAK,EAAE,4CAA4C;QACnD,MAAM,EAAE,iBAAiB;QACzB,IAAI,EAAE,GAAG;KACV;CACF,CAAC"}

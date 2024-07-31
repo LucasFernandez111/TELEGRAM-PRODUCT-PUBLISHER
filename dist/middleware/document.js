@@ -18,7 +18,6 @@ const isExcelFile = (ctx, next) => __awaiter(void 0, void 0, void 0, function* (
         return;
     if (document.mime_type !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
         return (0, response_handler_1.handleResponse)(ctx, "middleware", "error");
-    (0, response_handler_1.handleResponse)(ctx, "middleware", "success");
     yield next();
 });
 exports.isExcelFile = isExcelFile;
