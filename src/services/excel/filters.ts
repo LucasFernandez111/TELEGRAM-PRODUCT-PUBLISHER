@@ -14,7 +14,7 @@ export const filterColumn = (column: Column, startRow: number) =>
           typeof value === "number")
     );
 export const filterCodes = (columnCodes: any) =>
-  columnCodes.map((value: CellValue) => value?.toString());
+  columnCodes.map((value: CellValue) => value?.toString().trim());
 
 export const filterUrls = (columnUrls: CellValue[]): string[] =>
   columnUrls
@@ -25,7 +25,9 @@ export const filterUrls = (columnUrls: CellValue[]): string[] =>
       return url;
     })
     .filter(
-      (url: any) => typeof url === "string" && url.includes("aliexpress.com")
+      (url: any) =>
+        typeof url === "string" &&
+        url.includes("https://www.aliexpress.com/item/")
     );
 
 export const filterYupoo = (columnYupoo: any) =>

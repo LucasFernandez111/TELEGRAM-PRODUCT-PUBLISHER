@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.taskYupoo = void 0;
+const custom_error_1 = require("../../../utils/custom.error");
 const taskYupoo = (page, url, codes) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield page.goto(`${url}search/album?uid=1&sort=&q=${codes.join(",")}`, {
@@ -47,8 +48,7 @@ const taskYupoo = (page, url, codes) => __awaiter(void 0, void 0, void 0, functi
         return results;
     }
     catch (err) {
-        console.error(`Error en taskYupoo para la URL: ${url} y códigos: ${codes.join(", ")}`, err);
-        throw new Error(`No se encontraron los elementos para los códigos: ${codes.join(", ")} en ${url}`);
+        throw new custom_error_1.CustomError(`No se encontro las publicaciónes para la URL: ${url} y códigos: ${codes.join(" - ")}`, `No se encontro las publicaciónes para la URL: ${url} y códigos: ${codes.join(" - ")}`, "taskYupoo");
     }
 });
 exports.taskYupoo = taskYupoo;

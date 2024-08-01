@@ -29,6 +29,7 @@ exports.default = (ctx) => __awaiter(void 0, void 0, void 0, function* () {
         const documentPath = path_1.default.join(config_1.receivedPath, fileName);
         const workbook = yield (0, read_excel_file_1.readExcelFile)(documentPath);
         const dataSheetComplete = (0, read_data_excel_1.readDataExcel)(workbook);
+        console.log(dataSheetComplete);
         const dataSheetPublish = (0, data_excel_1.getFirstFiveElements)(dataSheetComplete);
         const dataSheetNew = (0, data_excel_1.getRemainingElements)(dataSheetComplete);
         const newDocument = yield (0, create_excel_1.createExcel)(dataSheetNew);

@@ -3,7 +3,7 @@ interface ICustomError extends Error {
   functionName?: string;
 }
 
-class CustomError extends Error implements ICustomError {
+export class CustomError extends Error implements ICustomError {
   clientMessage: string;
   functionName?: string;
 

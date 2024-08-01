@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.clusterYupoo = void 0;
 const puppeteer_cluster_1 = require("puppeteer-cluster");
 const taks_yupoo_1 = require("../tasks/taks.yupoo");
+const error_handler_1 = require("../../../utils/error_handler");
 const clusterYupoo = (url, codes, ctx) => __awaiter(void 0, void 0, void 0, function* () {
     const linksImages = [];
     const cluster = yield puppeteer_cluster_1.Cluster.launch({
@@ -28,10 +29,7 @@ const clusterYupoo = (url, codes, ctx) => __awaiter(void 0, void 0, void 0, func
             linksImages.push(...links);
         }
         catch (error) {
-            console.error(`Error processing URL: ${url}`, error);
-            if (ctx) {
-                yield ctx.reply(error === null || error === void 0 ? void 0 : error.message);
-            }
+            (0, error_handler_1.handlerError)(error, ctx);
         }
     }));
     cluster.queue({ url, codes });

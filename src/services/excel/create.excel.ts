@@ -1,28 +1,49 @@
-import Excel from "exceljs";
-
+import Excel, { Column } from "exceljs";
 import { DataSheet } from "../../interfaces/excel.interfaces";
 import { generatedPath } from "../../config";
 import path from "path";
 
 export const createExcel = async (dataSheet: DataSheet) => {
   const { codes, urls, yupoo } = dataSheet;
-
-  if (!codes || !urls || !yupoo)
-    throw new CustomError(
-      "No se encontraron datos en Sheet",
-      "⚠️ Error en los datos: Hay un problema con los datos del archivo Excel. Por favor, revisa y corrige cualquier error antes de reenviarlo. ¡Gracias! 📊",
-      "createExcel"
-    );
   const workbook = new Excel.Workbook();
+  const worksheet = workbook.addWorksheet("My Sheet");
 
-  const workSheet = workbook.addWorksheet("Sheet 1");
+  const headers = ["CODE", "Aliexpress link", yupoo];
+  headers.forEach((header, index) => {
+    worksheet.getColumn(index + 1).header = header;
+    styleColumn(worksheet.getColumn(index + 1), header);
+  });
+  // Configurar las columnas con sus datos correspondientes
+  worksheet.getColumn(1).values = codes;
+  worksheet.getColumn(2).values = urls;
 
-  workSheet.getColumn(1).values = codes;
-  workSheet.getColumn(2).values = urls;
-  workSheet.getCell("C1").value = yupoo;
+  // Establecer y estilizar los encabezados de las columnas
 
-  const filePath = path.join(generatedPath, `${Date.now()}.xlsx`);
+  // Generar el nombre del archivo con la hora y minutos actuales
+  const filePath = generateFileName();
   await workbook.xlsx.writeFile(filePath);
-
   return filePath;
 };
+
+function styleColumn(column: Column, header: string) {
+  column.eachCell((cell) => {
+    cell.style = {
+      font: { color: { argb: "FFFFFFFF" }, bold: true },
+      fill: {
+        type: "pattern",
+        pattern: "solid",
+        fgColor: { argb: "FF0000FF" },
+      },
+      alignment: { horizontal: "center" },
+    };
+  });
+  column.width = header.length < 12 ? 12 : header.length;
+}
+
+function generateFileName() {
+  const date = new Date();
+  const hours = date.getHours().toString().padStart(2, "0");
+  const minutes = date.getMinutes().toString().padStart(2, "0");
+  const fileName = `${hours}-${minutes}.xlsx`;
+  return path.join(generatedPath, fileName);
+}

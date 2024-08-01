@@ -8,7 +8,7 @@ const filterColumn = (column, startRow) => column.values
         typeof value === "object" ||
         typeof value === "number"));
 exports.filterColumn = filterColumn;
-const filterCodes = (columnCodes) => columnCodes.map((value) => value === null || value === void 0 ? void 0 : value.toString());
+const filterCodes = (columnCodes) => columnCodes.map((value) => value === null || value === void 0 ? void 0 : value.toString().trim());
 exports.filterCodes = filterCodes;
 const filterUrls = (columnUrls) => columnUrls
     .map((url) => {
@@ -17,7 +17,8 @@ const filterUrls = (columnUrls) => columnUrls
     }
     return url;
 })
-    .filter((url) => typeof url === "string" && url.includes("aliexpress.com"));
+    .filter((url) => typeof url === "string" &&
+    url.includes("https://www.aliexpress.com/item/"));
 exports.filterUrls = filterUrls;
 const filterYupoo = (columnYupoo) => typeof columnYupoo === "object" && "text" in columnYupoo
     ? columnYupoo.text

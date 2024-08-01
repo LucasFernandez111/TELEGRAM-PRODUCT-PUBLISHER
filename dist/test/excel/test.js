@@ -11,11 +11,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const read_data_excel_1 = require("../../services/excel/read.data.excel");
 const read_excel_file_1 = require("../../services/excel/read.excel.file");
+const richtext_1 = require("../../services/excel/richtext");
 function testExtractorData(path) {
     return __awaiter(this, void 0, void 0, function* () {
         const workbook = yield (0, read_excel_file_1.readExcelFile)(path);
         return yield (0, read_data_excel_1.readDataExcel)(workbook);
     });
 }
-testExtractorData("C:/Users/Lucas/Desktop/TELEGRAM-BOT-ADMIN/src/test/excel/test.xlsx").then((res) => console.log(res));
+console.log((0, richtext_1.extractPlainText)("ghghghghhttps://zxd1688.x.yupoo.com/"));
 //# sourceMappingURL=test.js.map

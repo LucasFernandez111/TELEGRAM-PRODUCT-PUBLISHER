@@ -2,6 +2,8 @@ import { Cluster } from "puppeteer-cluster";
 
 import { Context } from "telegraf";
 import { taskAliexpress } from "../tasks/task.aliexpress";
+import { CustomError } from "../../../utils/custom.error";
+import { handlerError } from "../../../utils/error_handler";
 
 export const clusterAliexpress = async (
   urls: string[],
@@ -22,11 +24,8 @@ export const clusterAliexpress = async (
     try {
       const price = await taskAliexpress(page, url);
       prices.push(price);
-    } catch (error: Error | any) {
-      console.error(`Error processing URL: ${url}`, error);
-      if (ctx) {
-        await ctx.reply(error?.message);
-      }
+    } catch (error: CustomError | any) {
+      handlerError(error, ctx);
     }
   });
 

@@ -1,4 +1,5 @@
 import { Page } from "puppeteer";
+import { CustomError } from "../../../utils/custom.error";
 
 interface CodeResult {
   titleCode: string;
@@ -62,14 +63,14 @@ export const taskYupoo = async (
 
     return results;
   } catch (err) {
-    console.error(
-      `Error en taskYupoo para la URL: ${url} y códigos: ${codes.join(", ")}`,
-      err
-    );
-    throw new Error(
-      `No se encontraron los elementos para los códigos: ${codes.join(
-        ", "
-      )} en ${url}`
+    throw new CustomError(
+      `No se encontro las publicaciónes para la URL: ${url} y códigos: ${codes.join(
+        " - "
+      )}`,
+      `No se encontro las publicaciónes para la URL: ${url} y códigos: ${codes.join(
+        " - "
+      )}`,
+      "taskYupoo"
     );
   }
 };

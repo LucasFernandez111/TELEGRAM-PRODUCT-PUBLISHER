@@ -1,4 +1,6 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.CustomError = void 0;
 class CustomError extends Error {
     constructor(message, clientMessage, functionName) {
         super(message);
@@ -8,4 +10,5 @@ class CustomError extends Error {
         Error.captureStackTrace(this, this.constructor);
     }
 }
+exports.CustomError = CustomError;
 //# sourceMappingURL=custom.error.js.map

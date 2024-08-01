@@ -1,13 +1,23 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.richToString = exports.isRichValue = void 0;
-const isRichValue = (value) => {
-    return Boolean(value && Array.isArray(value.richText));
+exports.extractPlainText = void 0;
+const extractPlainText = (cellValue) => {
+    const httpRegex = /https?:\/\/\S*/;
+    let text = extractText(cellValue);
+    const match = text.match(httpRegex);
+    return match ? match[0] : "";
 };
-exports.isRichValue = isRichValue;
-const richToString = (rich) => rich.richText
-    .map(({ text }) => text)
-    .filter((text) => text.includes("yupoo.com"))
-    .join("");
-exports.richToString = richToString;
+exports.extractPlainText = extractPlainText;
+const extractText = (cellValue) => {
+    if (typeof cellValue === "string") {
+        return cellValue;
+    }
+    if (isRichText(cellValue)) {
+        return cellValue.richText.map((part) => part.text).join("");
+    }
+    return "";
+};
+const isRichText = (cellValue) => {
+    return Boolean(cellValue && typeof cellValue === "object" && cellValue.richText);
+};
 //# sourceMappingURL=richtext.js.map

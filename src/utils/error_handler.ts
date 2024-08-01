@@ -1,4 +1,5 @@
 import { Context } from "telegraf";
+import { CustomError } from "./custom.error";
 
 export const handlerError = (err: Error, ctx?: Context) => {
   if (err instanceof CustomError) {

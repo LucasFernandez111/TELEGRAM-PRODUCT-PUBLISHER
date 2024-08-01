@@ -25,9 +25,7 @@ export default async (ctx: Context) => {
     const documentPath = path.join(receivedPath, fileName);
     const workbook = await readExcelFile(documentPath);
     const dataSheetComplete = readDataExcel(workbook);
-
-    // if (!isDataComplete(dataSheetComplete))
-    //   throw new Error("Datos incompletos");
+    console.log(dataSheetComplete);
 
     //Crear nuevo Excel
     const dataSheetPublish = getFirstFiveElements(dataSheetComplete);

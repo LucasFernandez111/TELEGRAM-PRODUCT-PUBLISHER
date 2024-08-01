@@ -12,8 +12,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.sendPost = void 0;
 const telegraf_1 = require("telegraf");
 const config_1 = require("../config");
+const custom_error_1 = require("./custom.error");
 const botGroup = new telegraf_1.Telegraf(config_1.BOT_GROUP);
 const sendPost = (price, url, href, pathImage) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!pathImage || !price || !url || !href)
+        throw new custom_error_1.CustomError("No hay imagen | precio | url |  href para enviar la publicacion ", "Ocurrió un error al publicar los productos. Por favor, inténtalo de nuevo más tarde.  🛍️", "sendPost");
     yield botGroup.telegram.sendPhoto(config_1.ID_GROUP, {
         source: pathImage,
     }, {

@@ -1,5 +1,6 @@
 import { Page } from "puppeteer";
 import { cookies, userAgent } from "../../../config/scrape";
+import { CustomError } from "../../../utils/custom.error";
 
 export const taskAliexpress = async (page: Page, url: string) => {
   await page.setUserAgent(userAgent);
@@ -9,7 +10,11 @@ export const taskAliexpress = async (page: Page, url: string) => {
   const title = await page.title();
 
   if (["Page Not Found - Aliexpress.com", "404 page", ""].includes(title))
-    throw Error(`❌ Enlace caido: ${url} `);
+    throw new CustomError(
+      "Enlace caido",
+      "❌ Enlace caido: " + url,
+      "taskAliexpress"
+    );
 
   const price = await page.evaluate(() => {
     return document.querySelector(".product-price")?.textContent;

@@ -1,6 +1,8 @@
 import { Context } from "telegraf";
 import { Cluster } from "puppeteer-cluster";
 import { taskYupoo } from "../tasks/taks.yupoo";
+import { CustomError } from "../../../utils/custom.error";
+import { handlerError } from "../../../utils/error_handler";
 
 interface TaskData {
   url: string;
@@ -33,11 +35,8 @@ export const clusterYupoo = async (
       try {
         const links = await taskYupoo(page, url, codes);
         linksImages.push(...links); // Asegúrate de concatenar los enlaces correctamente.
-      } catch (error: Error | any) {
-        console.error(`Error processing URL: ${url}`, error);
-        if (ctx) {
-          await ctx.reply(error?.message);
-        }
+      } catch (error: CustomError | any) {
+        handlerError(error, ctx);
       }
     }
   );

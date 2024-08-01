@@ -1,9 +1,27 @@
-export const isRichValue = (value: any) => {
-  return Boolean(value && Array.isArray(value.richText));
+import { CellValue, RichText } from "exceljs";
+
+export const extractPlainText = (cellValue: any): string => {
+  const httpRegex = /https?:\/\/\S*/;
+
+  let text = extractText(cellValue);
+  const match = text.match(httpRegex);
+  return match ? match[0] : "";
 };
 
-export const richToString = (rich: any) =>
-  rich.richText
-    .map(({ text }: { text: string }) => text)
-    .filter((text: any) => text.includes("yupoo.com"))
-    .join("");
+const extractText = (cellValue: CellValue | any): string => {
+  if (typeof cellValue === "string") {
+    return cellValue;
+  }
+
+  if (isRichText(cellValue)) {
+    return cellValue.richText.map((part: RichText) => part.text).join("");
+  }
+
+  return "";
+};
+
+const isRichText = (cellValue: CellValue | any): boolean => {
+  return Boolean(
+    cellValue && typeof cellValue === "object" && cellValue.richText
+  );
+};

@@ -1,6 +1,8 @@
 import { Cluster } from "puppeteer-cluster";
 import { taskGetImages } from "../tasks/task.get.images";
 import { Context } from "telegraf";
+import { handlerError } from "../../../utils/error_handler";
+import { CustomError } from "../../../utils/custom.error";
 
 export const clusterImages = async (
   urls: { href: string }[],
@@ -22,17 +24,11 @@ export const clusterImages = async (
       try {
         const imgPath = await taskGetImages({ page, url });
         const existingEntry = results.find((entry) => entry.url === url);
-        if (existingEntry) {
-          existingEntry.images = imgPath;
-        } else {
-          results.push({ url, images: imgPath });
-        }
-      } catch (error) {
-        console.warn(`Error capturing images for URL: ${url}`, error);
+        if (!existingEntry) return results.push({ url, images: imgPath });
 
-        if (ctx) {
-          ctx.reply(`Algo salio mal capturando imagenes de ${url}`);
-        }
+        existingEntry.images = imgPath;
+      } catch (error: CustomError | any) {
+        handlerError(error, ctx);
       }
     }
   );

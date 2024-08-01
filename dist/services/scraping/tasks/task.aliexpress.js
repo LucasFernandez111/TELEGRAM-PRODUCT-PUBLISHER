@@ -11,13 +11,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.taskAliexpress = void 0;
 const scrape_1 = require("../../../config/scrape");
+const custom_error_1 = require("../../../utils/custom.error");
 const taskAliexpress = (page, url) => __awaiter(void 0, void 0, void 0, function* () {
     yield page.setUserAgent(scrape_1.userAgent);
     yield page.setCookie(...scrape_1.cookies);
     yield page.goto(url);
     const title = yield page.title();
     if (["Page Not Found - Aliexpress.com", "404 page", ""].includes(title))
-        throw Error(`❌ Enlace caido: ${url} `);
+        throw new custom_error_1.CustomError("Enlace caido", "❌ Enlace caido: " + url, "taskAliexpress");
     const price = yield page.evaluate(() => {
         var _a;
         return (_a = document.querySelector(".product-price")) === null || _a === void 0 ? void 0 : _a.textContent;

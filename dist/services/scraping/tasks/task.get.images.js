@@ -15,49 +15,38 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.taskGetImages = void 0;
 const path_1 = __importDefault(require("path"));
 const config_1 = require("../../../config");
+const custom_error_1 = require("../../../utils/custom.error");
 const taskGetImages = (_a) => __awaiter(void 0, [_a], void 0, function* ({ page, url, }) {
-    try {
-        yield page.setViewport({
-            width: 1920,
-            height: 1080,
-            deviceScaleFactor: 3,
-        });
-        yield page.goto(url, { waitUntil: "networkidle2", timeout: 60000 });
-        yield page.waitForSelector("img.autocover", {
-            timeout: 30000,
-            visible: true,
-        });
-        const elementImage = yield page.$("img.autocover");
-        if (!elementImage) {
-            const errorMessage = `[getImages] No se encontró el elemento en ${url}`;
-            console.error(errorMessage);
-            throw new Error(errorMessage);
-        }
-        const urlParts = url.split("/");
-        const baseName = (urlParts.pop() || "").split("?")[0];
-        const uniqueName = `${baseName}-${Date.now()}.png`;
-        const pathRelative = path_1.default.resolve(config_1.imagesBasePath, uniqueName);
-        const boundingBox = yield elementImage.boundingBox();
-        if (!boundingBox) {
-            const errorMessage = `[getImages] No se pudo obtener el bounding box del elemento en ${url}`;
-            console.error(errorMessage);
-            throw new Error(errorMessage);
-        }
-        yield page.screenshot({
-            path: pathRelative,
-            clip: {
-                x: boundingBox.x,
-                y: boundingBox.y,
-                width: boundingBox.width,
-                height: boundingBox.height,
-            },
-        });
-        return pathRelative;
-    }
-    catch (error) {
-        console.error(`[getImages] Error procesando la URL: ${url}`, error);
-        throw new Error(`[getImages] Error procesando la URL: ${url}`);
-    }
+    yield page.setViewport({
+        width: 1920,
+        height: 1080,
+        deviceScaleFactor: 3,
+    });
+    yield page.goto(url, { waitUntil: "networkidle2", timeout: 60000 });
+    yield page.waitForSelector("img.autocover", {
+        timeout: 30000,
+        visible: true,
+    });
+    const elementImage = yield page.$("img.autocover");
+    if (!elementImage)
+        throw new custom_error_1.CustomError(`No se encontró el elemento (img.autocover) en ${url}`, "⚠️ Hubo un problema al capturar la imagen. Por favor, intenta de nuevo. 📷", "taskGetImages");
+    const urlParts = url.split("/");
+    const baseName = (urlParts.pop() || "").split("?")[0];
+    const uniqueName = `${baseName}-${Date.now()}.png`;
+    const pathRelative = path_1.default.resolve(config_1.imagesBasePath, uniqueName);
+    const boundingBox = yield elementImage.boundingBox();
+    if (!boundingBox)
+        throw new custom_error_1.CustomError(`No se pudo obtener el bounding box del elemento en ${url}`, "⚠️ Hubo un problema al capturar la imagen. Por favor, intenta de nuevo. 📷", "taskGetImages");
+    yield page.screenshot({
+        path: pathRelative,
+        clip: {
+            x: boundingBox.x,
+            y: boundingBox.y,
+            width: boundingBox.width,
+            height: boundingBox.height,
+        },
+    });
+    return pathRelative;
 });
 exports.taskGetImages = taskGetImages;
 //# sourceMappingURL=task.get.images.js.map

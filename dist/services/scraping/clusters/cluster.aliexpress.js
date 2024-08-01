@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.clusterAliexpress = void 0;
 const puppeteer_cluster_1 = require("puppeteer-cluster");
 const task_aliexpress_1 = require("../tasks/task.aliexpress");
+const error_handler_1 = require("../../../utils/error_handler");
 const clusterAliexpress = (urls, ctx) => __awaiter(void 0, void 0, void 0, function* () {
     const prices = [];
     const cluster = yield puppeteer_cluster_1.Cluster.launch({
@@ -28,10 +29,7 @@ const clusterAliexpress = (urls, ctx) => __awaiter(void 0, void 0, void 0, funct
             prices.push(price);
         }
         catch (error) {
-            console.error(`Error processing URL: ${url}`, error);
-            if (ctx) {
-                yield ctx.reply(error === null || error === void 0 ? void 0 : error.message);
-            }
+            (0, error_handler_1.handlerError)(error, ctx);
         }
     }));
     for (const url of urls) {

@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.clusterImages = void 0;
 const puppeteer_cluster_1 = require("puppeteer-cluster");
 const task_get_images_1 = require("../tasks/task.get.images");
+const error_handler_1 = require("../../../utils/error_handler");
 const clusterImages = (urls, ctx) => __awaiter(void 0, void 0, void 0, function* () {
     const results = [];
     const cluster = yield puppeteer_cluster_1.Cluster.launch({
@@ -26,18 +27,12 @@ const clusterImages = (urls, ctx) => __awaiter(void 0, void 0, void 0, function*
         try {
             const imgPath = yield (0, task_get_images_1.taskGetImages)({ page, url });
             const existingEntry = results.find((entry) => entry.url === url);
-            if (existingEntry) {
-                existingEntry.images = imgPath;
-            }
-            else {
-                results.push({ url, images: imgPath });
-            }
+            if (!existingEntry)
+                return results.push({ url, images: imgPath });
+            existingEntry.images = imgPath;
         }
         catch (error) {
-            console.warn(`Error capturing images for URL: ${url}`, error);
-            if (ctx) {
-                ctx.reply(`Algo salio mal capturando imagenes de ${url}`);
-            }
+            (0, error_handler_1.handlerError)(error, ctx);
         }
     }));
     urls.forEach(({ href }) => cluster.queue(href));
