@@ -12,11 +12,13 @@ const readDataExcel = (workbook) => {
         var _a;
         const columnsWithData = worksheet.actualColumnCount.valueOf();
         if (!columnsWithData)
-            return;
+            return th;
         const isStructured = ((_a = worksheet.getCell("A1").value) === null || _a === void 0 ? void 0 : _a.toString().toUpperCase()) === "CODE";
         const startRow = isStructured ? 2 : 1;
         const columnA1 = (0, filters_1.filterColumn)(worksheet.getColumn(1), startRow);
         const columnB1 = (0, filters_1.filterColumn)(worksheet.getColumn(2), startRow);
+        if (worksheet.getColumn(3).values.length > 1)
+            throw new Error("Mas de un enlace en C1");
         const cellC1 = worksheet.getCell("C1").value;
         if (!cellC1) {
             throw new Error("Error en C1: Celda vacía");

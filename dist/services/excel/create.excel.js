@@ -19,7 +19,7 @@ const path_1 = __importDefault(require("path"));
 const createExcel = (dataSheet) => __awaiter(void 0, void 0, void 0, function* () {
     const { codes, urls, yupoo } = dataSheet;
     if (!codes || !urls || !yupoo)
-        throw new Error("Error en los datos");
+        throw new CustomError("No se encontraron datos en Sheet", "⚠️ Error en los datos: Hay un problema con los datos del archivo Excel. Por favor, revisa y corrige cualquier error antes de reenviarlo. ¡Gracias! 📊", "createExcel");
     const workbook = new exceljs_1.default.Workbook();
     const workSheet = workbook.addWorksheet("Sheet 1");
     workSheet.getColumn(1).values = codes;
