@@ -7,7 +7,12 @@ import path from "path";
 export const createExcel = async (dataSheet: DataSheet) => {
   const { codes, urls, yupoo } = dataSheet;
 
-  if (!codes || !urls || !yupoo) throw new Error("Error en los datos");
+  if (!codes || !urls || !yupoo)
+    throw new CustomError(
+      "No se encontraron datos en Sheet",
+      "⚠️ Error en los datos: Hay un problema con los datos del archivo Excel. Por favor, revisa y corrige cualquier error antes de reenviarlo. ¡Gracias! 📊",
+      "createExcel"
+    );
   const workbook = new Excel.Workbook();
 
   const workSheet = workbook.addWorksheet("Sheet 1");

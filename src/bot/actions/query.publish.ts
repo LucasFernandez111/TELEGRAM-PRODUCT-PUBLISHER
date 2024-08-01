@@ -1,9 +1,4 @@
-import {
-  dirDocumentPath,
-  generatedPath,
-  imagesBasePath,
-  receivedPath,
-} from "../../config";
+import { generatedPath, imagesBasePath, receivedPath } from "../../config";
 import {
   readExcelFile,
   searchExcelFile,
@@ -31,8 +26,8 @@ export default async (ctx: Context) => {
     const workbook = await readExcelFile(documentPath);
     const dataSheetComplete = readDataExcel(workbook);
 
-    if (!isDataComplete(dataSheetComplete))
-      throw new Error("Datos incompletos");
+    // if (!isDataComplete(dataSheetComplete))
+    //   throw new Error("Datos incompletos");
 
     //Crear nuevo Excel
     const dataSheetPublish = getFirstFiveElements(dataSheetComplete);
