@@ -21,11 +21,15 @@ export const readDataExcel = (workbook: Workbook): DataSheet => {
 
     const columnA1 = filterColumn(worksheet.getColumn(1), startRow);
     const columnB1 = filterColumn(worksheet.getColumn(2), startRow);
+
     const cellC1 = worksheet.getCell("C1").value;
 
-    if (!cellC1) {
-      throw new Error("Error en C1: Celda vacía");
-    }
+    if (!cellC1 || worksheet.getColumn(3).values.length > 1)
+      throw new CustomError(
+        "Multiples enlaces o vacia en [C1]",
+        "⚠️ Se detectaron múltiples enlaces o vacía en la celda C1",
+        "readDataExcel"
+      );
 
     const codes = filterCodes(columnA1);
     const urls = filterUrls(columnB1);
