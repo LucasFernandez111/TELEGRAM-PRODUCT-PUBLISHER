@@ -47,8 +47,6 @@ export const readDataExcel = (workbook: Workbook): DataSheet => {
     const urls = filterUrls(columnB1);
     const yupoo = extractPlainText(worksheet.getCell("C1").value);
 
-    console.log(yupoo);
-
     if (!codes || !urls || !yupoo)
       throw new CustomError(
         "No se encontraron datos en Sheet",
